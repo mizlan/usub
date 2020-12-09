@@ -24,7 +24,11 @@ def submit(filepath: Path, lang: Lang, cpid: str) -> SubmissionID:
         cookies=cookies
     )
 
+    return get_sid(cpid)
+
+def get_sid(cpid: str) -> SubmissionID:
     p_url = f'http://usaco.org/index.php?page=viewproblem2&cpid={cpid}'
+    cookies = session.get_cookie_dict()
 
     response = requests.get(
         p_url,
@@ -41,4 +45,4 @@ def submit(filepath: Path, lang: Lang, cpid: str) -> SubmissionID:
 if __name__ == '__main__':
     g = Path('/Users/michaellan/code/cp/help-yourself.cpp')
     cpid = '1018'
-    submit(g, submitutil.infer('cpp'), cpid)
+    print(submit(g, submitutil.infer('cpp'), cpid))
