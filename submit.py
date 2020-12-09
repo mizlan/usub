@@ -24,9 +24,6 @@ def submit(filepath: Path, lang: Lang, cpid: str) -> SubmissionID:
         cookies=cookies
     )
 
-    # print(response.headers)
-    # print(response.text)
-
     p_url = f'http://usaco.org/index.php?page=viewproblem2&cpid={cpid}'
 
     response = requests.get(
@@ -37,11 +34,9 @@ def submit(filepath: Path, lang: Lang, cpid: str) -> SubmissionID:
     soup = BeautifulSoup(response.text, 'lxml')
 
     try:
-        print(soup.find(id='last-status').get('data-sid'))
+        return soup.find(id='last-status').get('data-sid')
     except Exception as e:
         raise e
-
-    return '3'
 
 if __name__ == '__main__':
     g = Path('/Users/michaellan/code/cp/help-yourself.cpp')
