@@ -12,6 +12,8 @@ def get_authentication():
 def _get_cached_cookie():
     '''
     gets cached cookie.
+    checks environment variable 'USUB_TOKEN' and file '~/usub'.
+    raises KeyError if neither is found.
     '''
     
     token = os.environ.get('USUB_TOKEN')
