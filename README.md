@@ -8,7 +8,7 @@
 
 ## installation
 
-```sh
+``` sh
 git clone https://github.com/mizlan/usub.git
 cd usub
 python -m venv venv
@@ -18,6 +18,14 @@ pip install -r requirements.txt
 
 ## file submission
 
+``` sh
+usub 1018 -f sol.cpp
+```
+
 ## submission status
+
+``` sh
+usub 1018
+```
 
 ## contributing
