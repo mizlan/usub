@@ -17,5 +17,6 @@ class Testcase:
         pass
 
 if __name__ == '__main__':
-    g = Testcase()
-    print(g.display())
+    for i in range(10):
+        g = Testcase()
+        print(g.display())
