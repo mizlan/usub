@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 
+import json
+
 import requests
 from bs4 import BeautifulSoup
 
 import session
 from submitutil import SubmissionID
+from testcase import Testcase
 
 def get_status(sid: SubmissionID):
     url = 'http://usaco.org/current/tpcm/status-update.php'
@@ -17,9 +20,23 @@ def get_status(sid: SubmissionID):
         cookies=cookies
     )
 
-    print(type(response.text))
-    # soup = BeautifulSoup(response.text, 'lxml')
-    # print(soup)
+    data = json.loads(response.text)
+    soup = BeautifulSoup(data['jd'], 'lxml')
+
+    return soup
+
+def display_status(sid: SubmissionID):
+    soup = get_status(sid)
+
+    testcases = []
+    for i in soup.find_all('a', class_='masterTooltip'):
+        d = i.select_one('div')
+        tc = Testcase()
+        tc.populate(d)
+        testcases.append(tc)
+
+    for i in testcases:
+        print(i.display())
 
 if __name__ == '__main__':
-    get_status('2217019')
+    display_status('2217019')
