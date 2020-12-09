@@ -51,8 +51,10 @@ def invalidate_sessid():
     except FileNotFoundError:
         sys.stderr.write(f'{tpath} not found\n')
 
-def get_sessid():
+def get_sessid(force_invalidate=False):
     sessid = None
+    if force_invalidate:
+        invalidate_sessid()
     try:
         sessid = _get_cached_sessid()
     except KeyError:
