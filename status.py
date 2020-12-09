@@ -13,33 +13,57 @@ import session
 from submitutil import SubmissionID
 from testcase import Testcase
 
+def colorize(message: str) -> str:
+    pref, suf = {
+        'Waiting for Available Grading Server': (f'{Fore.MAGENTA}[', f']{Style.RESET_ALL}'),
+        'Grading in Progress': (f'{Fore.CYAN}[', f']{Style.RESET_ALL}')
+    }.get(message, ('', ''))
+
+    return pref + message + suf
+
 def get_status(sid: SubmissionID):
     url = 'http://usaco.org/current/tpcm/status-update.php'
     data = {'sid': sid}
     cookies = session.get_cookie_dict()
 
+    last_status = ''
     respdata = None
     attempts = 0
+    testcases = []
     max_iterations = 40
-    spinner = ' ◢', '◣ ', '◤ ', ' ◥'
 
-    with alive_bar(max_iterations, spinner='dots_waves') as bar:
-        while True:
-            attempts += 1
-            response = requests.post(
-                url,
-                data=data,
-                cookies=cookies
-            )
-            respdata = json.loads(response.text)
-            status = respdata['sr']
-            # print(spinner[attempts % 4], end='\r')
-            if int(respdata['cd']) > -8:
-                break
-            bar()
-            time.sleep(0.200)
+    # the number of the last completed testcase
+    last_completed_test = 0
 
-    # print(respdata)
+    while True:
+        attempts += 1
+        response = requests.post(
+            url,
+            data=data,
+            cookies=cookies
+        )
+        respdata = json.loads(response.text)
+        status = respdata['sr']
+        if status != last_status and respdata['jd'].strip() == '':
+            print(colorize(status))
+            last_status = status
+
+        soup = BeautifulSoup(respdata['jd'], 'lxml')
+        for tc_elem in soup.find_all('a', class_='masterTooltip'):
+            d = tc_elem.select_one('div')
+            tc = Testcase()
+            tc.populate(d)
+            finished = int(tc.testcase_num)
+            if finished > last_completed_test:
+                last_completed_test = finished
+                print(tc.display())
+            testcases.append(tc)
+
+
+        if int(respdata['cd']) > -8:
+            break
+        time.sleep(0.100)
+
     if respdata['jd'].strip() == '':
         print(Fore.RED, end='')
         print(respdata['sr'].strip())
@@ -55,15 +79,15 @@ def display_status(sid: SubmissionID):
     except IOError:
         sys.exit(1)
 
-    testcases = []
-    for i in soup.find_all('a', class_='masterTooltip'):
-        d = i.select_one('div')
-        tc = Testcase()
-        tc.populate(d)
-        testcases.append(tc)
+    # testcases = []
+    # for i in soup.find_all('a', class_='masterTooltip'):
+    #     d = i.select_one('div')
+    #     tc = Testcase()
+    #     tc.populate(d)
+    #     testcases.append(tc)
 
-    for i in testcases:
-        print(i.display())
+    # for i in testcases:
+    #     print(i.display())
 
 if __name__ == '__main__':
     display_status('2217019')
