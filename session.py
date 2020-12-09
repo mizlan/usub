@@ -61,7 +61,6 @@ def get_sessid():
     return sessid
 
 def get_cookie_dict():
-    invalidate_sessid()
     return {
         'PHPSESSID': get_sessid()
     }
