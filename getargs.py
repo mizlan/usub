@@ -7,7 +7,7 @@ def getargs():
     parser.add_argument('-l', '--lang', help='submission language', default='infer')
     parser.add_argument(dest='problem', help='USACO problem link or cpid')
     args = parser.parse_args()
-    print(args)
+    return args
 
 if __name__ == '__main__':
     getargs()
