@@ -22,14 +22,12 @@ def gen_new_sessid():
 def _get_cached_sessid():
     '''
     gets cached sessid.
-    checks environment variable 'USUB_SESSID' and file '~/usub'.
+    checks file '~/usub' for key.
     raises KeyError if neither is found.
     '''
 
     tpath = get_cache_filepath()
 
-    if token is not None:
-        return token
     if tpath.is_file():
         tpath = tpath.resolve(strict=True)
         return open(tpath).read().strip()
@@ -54,10 +52,19 @@ def invalidate_sessid():
         sys.stderr.write(f'{tpath} not found\n')
 
 def get_sessid():
-    cached = _get_cached_sessid()
-    return cached
+    sessid = None
+    try:
+        sessid = _get_cached_sessid()
+    except KeyError:
+        sessid = gen_new_sessid()
+        write_sessid(sessid)
+    return sessid
+
+def get_cookie_dict():
+    invalidate_sessid()
+    return {
+        'PHPSESSID': get_sessid()
+    }
 
 if __name__ == "__main__":
     write_sessid(gen_new_sessid())
-    # print(get_sessid())
-    # invalidate_sessid()
