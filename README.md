@@ -1,6 +1,12 @@
+<div align="center">
+
 # usub
 
-to run locally:
+[installation](##-installation) | [file submission](##-file-submission) | [submission status](##-submission-status) | [contributing](##-contributing)
+
+</div>
+
+## installation
 
 ```sh
 git clone https://github.com/mizlan/usub.git
@@ -9,3 +15,9 @@ python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
+
+## file submission
+
+## submission status
+
+## contributing
