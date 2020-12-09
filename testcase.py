@@ -12,7 +12,7 @@ class Testcase:
         self.display_char = '?'
 
     def display(self) -> str:
-        return f'{self.testcase_num:>4} {self.color}[{self.display_char}]{Style.RESET_ALL}{self.time_usage:>11}{self.mem_usage:>10}'
+        return f'{self.testcase_num:>4} {self.color}[{self.display_char}]{Style.RESET_ALL}{self.time_usage:>7}{self.mem_usage:>8}'
 
     def populate(self, soup: BeautifulSoup):
         if 'trial-status-yes' in soup['class']:
