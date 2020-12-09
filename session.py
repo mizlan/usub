@@ -1,27 +1,32 @@
 '''
-handles session cookie invalidation/expiration, and retrieving cookie
+handles session sessid invalidation/expiration, and retrieving sessid
 '''
 
-import os
 import sys
-import auth
 from pathlib import Path
+
+import auth
+import login
 
 def get_authentication():
     return auth.get()
 
-def get_token_path():
+def get_cache_filepath():
     return Path.home() / 'usub'
 
-def _get_cached_cookie():
+def gen_new_sessid():
+    username, password = get_authentication()
+    sessid = login.login(username, password)
+    return sessid
+
+def _get_cached_sessid():
     '''
-    gets cached cookie.
-    checks environment variable 'USUB_TOKEN' and file '~/usub'.
+    gets cached sessid.
+    checks environment variable 'USUB_SESSID' and file '~/usub'.
     raises KeyError if neither is found.
     '''
 
-    token = os.environ.get('USUB_TOKEN')
-    tpath = get_token_path()
+    tpath = get_cache_filepath()
 
     if token is not None:
         return token
@@ -29,35 +34,30 @@ def _get_cached_cookie():
         tpath = tpath.resolve(strict=True)
         return open(tpath).read().strip()
 
-    raise KeyError
+    raise KeyError('nothing found')
 
-def write_cookie(cookie: str):
-    os.environ['USUB_TOKEN'] = cookie
-    tpath = get_token_path()
+def write_sessid(sessid: str):
+    tpath = get_cache_filepath()
     with open(tpath, 'w+') as f:
-        f.write(cookie + '\n')
+        f.write(sessid + '\n')
 
-def invalidate_cookie():
+def invalidate_sessid():
     '''
     uses try/except to avoid race conditions, see:
     https://en.wikipedia.org/wiki/Time-of-check_to_time-of-use
     '''
 
-    try:
-        del os.environ['USUB_TOKEN']
-    except KeyError:
-        sys.stderr.write('USUB_TOKEN not found\n')
-
-    tpath = get_token_path()
+    tpath = get_cache_filepath()
     try:
         tpath.unlink()
     except FileNotFoundError:
         sys.stderr.write(f'{tpath} not found\n')
 
-def get_session_cookie():
-    cached = _get_cached_cookie()
+def get_sessid():
+    cached = _get_cached_sessid()
     return cached
 
 if __name__ == "__main__":
-    # print(get_session_cookie())
-    invalidate_cookie()
+    write_sessid(gen_new_sessid())
+    # print(get_sessid())
+    # invalidate_sessid()
