@@ -43,24 +43,26 @@ def get_status(sid: SubmissionID):
             cookies=cookies
         )
         respdata = json.loads(response.text)
-        status = respdata['sr']
-        if status != last_status and respdata['jd'].strip() == '':
-            print(colorize(status))
-            last_status = status
+        if 'sr' in respdata:
+            status = respdata['sr']
+            if status != last_status and respdata['jd'].strip() == '':
+                print(colorize(status))
+                last_status = status
 
-        soup = BeautifulSoup(respdata['jd'], 'lxml')
-        for tc_elem in soup.find_all('a', class_='masterTooltip'):
-            d = tc_elem.select_one('div')
-            tc = Testcase()
-            tc.populate(d)
-            finished = int(tc.testcase_num)
-            if finished > last_completed_test:
-                last_completed_test = finished
-                print(tc.display())
-            testcases.append(tc)
+        if 'jd' in respdata:
+            soup = BeautifulSoup(respdata['jd'], 'lxml')
+            for tc_elem in soup.find_all('a', class_='masterTooltip'):
+                d = tc_elem.select_one('div')
+                tc = Testcase()
+                tc.populate(d)
+                finished = int(tc.testcase_num)
+                if finished > last_completed_test:
+                    last_completed_test = finished
+                    print(tc.display())
+                testcases.append(tc)
 
 
-        if int(respdata['cd']) > -8:
+        if 'cd' in respdata and int(respdata['cd']) > -8:
             break
         time.sleep(0.100)
 
