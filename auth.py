@@ -10,5 +10,5 @@ def get():
 
     return username, password
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     print(get())
