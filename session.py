@@ -5,6 +5,9 @@ handles session sessid invalidation/expiration, and retrieving sessid
 import sys
 from pathlib import Path
 
+import requests
+from bs4 import BeautifulSoup
+
 import auth
 import login
 
@@ -57,6 +60,9 @@ def get_sessid(force_invalidate=False):
         invalidate_sessid()
     try:
         sessid = _get_cached_sessid()
+        if not sessid_is_valid(sessid):
+            sys.stderr.write('found invalid session ID')
+            raise KeyError
     except KeyError:
         sessid = gen_new_sessid()
         write_sessid(sessid)
@@ -67,5 +73,13 @@ def get_cookie_dict():
         'PHPSESSID': get_sessid()
     }
 
-if __name__ == "__main__":
-    write_sessid(gen_new_sessid())
+def sessid_is_valid(sessid: str) -> bool:
+    url = 'http://usaco.org/index.php'
+    response = requests.get(
+        url,
+        cookies={ 'PHPSESSID': sessid }
+    )
+    return not ("Not currently logged in." in response.text)
+
+if __name__ == '__main__':
+    print(sessid_is_valid(_get_cached_sessid()))
