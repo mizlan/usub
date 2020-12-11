@@ -84,15 +84,5 @@ def display_status(sid: SubmissionID):
     except IOError:
         sys.exit(1)
 
-    # testcases = []
-    # for i in soup.find_all('a', class_='masterTooltip'):
-    #     d = i.select_one('div')
-    #     tc = Testcase()
-    #     tc.populate(d)
-    #     testcases.append(tc)
-
-    # for i in testcases:
-    #     print(i.display())
-
 if __name__ == '__main__':
     display_status('2217019')
