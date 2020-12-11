@@ -22,6 +22,9 @@ def colorize(message: str) -> str:
     return pref + message + suf
 
 def get_status(sid: SubmissionID):
+    if sid == '-1':
+        raise KeyError('unattempted problem, no status!')
+
     url = 'http://usaco.org/current/tpcm/status-update.php'
     data = {'sid': sid}
     cookies = session.get_cookie_dict()
