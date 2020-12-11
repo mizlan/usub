@@ -35,9 +35,10 @@ def main():
     if args.file is not None:
         TYPE = 'submission'
 
+    sid = '-1'
+
     if TYPE == 'status':
         sid = submit.get_sid(CPID)
-        status.display_status(sid)
     elif TYPE == 'submission':
         FILE = Path(args.file)
         LANG = args.lang
@@ -50,7 +51,8 @@ def main():
         else:
             CODE = submitutil.get_code(LANG)
         sid = submit.submit(FILE, CODE, CPID)
-        status.display_status(sid)
+
+    status.display_status(sid)
 
 if __name__ == '__main__':
     colorama.init()
