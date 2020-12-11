@@ -35,6 +35,7 @@ def _get_cached_sessid():
         tpath = tpath.resolve(strict=True)
         return open(tpath).read().strip()
 
+    # TODO use a custom exception instead of KeyError
     raise KeyError('nothing found')
 
 def write_sessid(sessid: str):
@@ -61,6 +62,7 @@ def get_sessid(force_invalidate=False):
     try:
         sessid = _get_cached_sessid()
         if not sessid_is_valid(sessid):
+            # TODO: use verbose mode
             sys.stderr.write('found invalid session ID')
             raise KeyError
     except KeyError:
