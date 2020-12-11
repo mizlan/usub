@@ -46,11 +46,6 @@ def get_status(sid: SubmissionID):
             cookies=cookies
         )
         respdata = json.loads(response.text)
-        if 'sr' in respdata:
-            status = respdata['sr']
-            if status != last_status and respdata['jd'].strip() == '':
-                print(colorize(status))
-                last_status = status
 
         if 'jd' in respdata:
             soup = BeautifulSoup(respdata['jd'], 'lxml')
@@ -64,9 +59,15 @@ def get_status(sid: SubmissionID):
                     print(tc.display())
                 testcases.append(tc)
 
-
         if 'cd' in respdata and int(respdata['cd']) > -8:
             break
+
+        if 'sr' in respdata:
+            status = respdata['sr']
+            if status != last_status and respdata['jd'].strip() == '':
+                print(colorize(status))
+                last_status = status
+
         time.sleep(0.100)
 
     if respdata['jd'].strip() == '':
