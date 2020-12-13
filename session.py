@@ -63,7 +63,7 @@ def get_sessid(force_invalidate=False):
         sessid = _get_cached_sessid()
         if not sessid_is_valid(sessid):
             # TODO: use verbose mode
-            sys.stderr.write('found invalid session ID')
+            sys.stderr.write('found invalid session ID\n')
             raise KeyError
     except KeyError:
         sessid = gen_new_sessid()
