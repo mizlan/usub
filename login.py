@@ -16,4 +16,6 @@ def login(username: str, password: str) -> str:
     return re.match(r'PHPSESSID=(\S+);', headers['Set-cookie']).group(1)
 
 if __name__ == '__main__':
-    print(login('test', 'test'))
+    username = input()
+    password = input()
+    print(login(username, password))
