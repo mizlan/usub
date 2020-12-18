@@ -2,7 +2,7 @@
 
 # usub
 
-[installation](##-installation) | [file submission](##-file-submission) | [submission status](##-submission-status) | [contributing](##-contributing)
+[installation](#installation) | [file submission](#file-submission) | [submission status](#submission-status) | [contributing](#contributing)
 
 </div>
 
