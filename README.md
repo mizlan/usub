@@ -12,20 +12,24 @@
 git clone https://github.com/mizlan/usub.git
 cd usub
 python -m venv venv
-source venv/bin/activate # or source venv/bin/activate.fish
+source venv/bin/activate # for fish: source venv/bin/activate.fish
 pip install -r requirements.txt
 pip install -e .
 ```
 
 ## file submission
 
+examples:
+
 ``` sh
 usub 739 -f sol.cpp # using the cpid
 # or
-usub 'http://www.usaco.org/index.php?page=viewproblem2&cpid=739' -f cownomics.cpp
+usub 'http://www.usaco.org/index.php?page=viewproblem2&cpid=739' -f cownomics.cpp -l cpp11
 ```
 
 ## submission status
+
+examples:
 
 ``` sh
 usub 739 # using the cpid
@@ -52,6 +56,8 @@ optional arguments:
   -f FILE, --file FILE  submission file
   -l LANG, --lang LANG  submission language
 ```
+
+note: `--verbose` doesn't work at the moment.
 
 ## contributing
 
