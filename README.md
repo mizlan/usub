@@ -28,9 +28,9 @@ usub 'http://www.usaco.org/index.php?page=viewproblem2&cpid=739' -f cownomics.cp
 ## submission status
 
 ``` sh
-usub 739 -f cownomics.cpp # using the cpid
+usub 739 # using the cpid
 # or
-usub 'http://www.usaco.org/index.php?page=viewproblem2&cpid=739' -f cownomics.cpp
+usub 'http://www.usaco.org/index.php?page=viewproblem2&cpid=739'
 ```
 
 ## other options
