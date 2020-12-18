@@ -11,6 +11,7 @@ import submitutil
 import status
 
 def main():
+    colorama.init()
     args = getargs.getargs()
 
     TYPE = 'status'
@@ -55,5 +56,4 @@ def main():
     status.display_status(sid)
 
 if __name__ == '__main__':
-    colorama.init()
     main()
