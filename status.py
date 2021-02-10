@@ -7,7 +7,6 @@ import sys
 import requests
 from bs4 import BeautifulSoup
 from colorama import Fore, Back, Style
-from alive_progress import alive_bar
 
 import session
 from submitutil import SubmissionID

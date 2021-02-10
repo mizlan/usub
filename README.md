@@ -6,8 +6,6 @@
 
 </div>
 
-# warning! CLIs are banned on USACO. Do not use this for any purposes other than didactic reasons.
-
 ## installation
 
 ``` sh
