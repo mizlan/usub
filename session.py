@@ -15,7 +15,7 @@ def get_authentication():
     return auth.get()
 
 def get_cache_filepath():
-    return Path.home() / 'usub'
+    return Path.home() / 'usub_session'
 
 def gen_new_sessid():
     username, password = get_authentication()
@@ -25,7 +25,7 @@ def gen_new_sessid():
 def _get_cached_sessid():
     '''
     gets cached sessid.
-    checks file '~/usub' for key.
+    checks file '~/usub_session' for key.
     raises KeyError if neither is found.
     '''
 
